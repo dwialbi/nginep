@@ -7,14 +7,19 @@ const {
   validateVerificationToken,
   createVerificationToken,
 } = require("../lib/verification")
-
+const { Op } = require("sequelize")
 const authController = {
   registerUser: async (req, res) => {
     try {
-      const { email, role } = req.body
+      const { email, phone_number, role } = req.body
 
       const findUserByEmail = await User.findOne({
-        where: { email },
+        where: {
+          [Op.or]: {
+            email,
+            phone_number,
+          },
+        },
       })
 
       if (findUserByEmail) {
@@ -25,6 +30,7 @@ const authController = {
 
       await User.create({
         email,
+        phone_number,
       })
 
       return res.status(201).json({

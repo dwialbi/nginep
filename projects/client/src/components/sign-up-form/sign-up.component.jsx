@@ -23,7 +23,7 @@ const SignUpFrom = () => {
       email: "",
       password: "",
       //   confirmPassword: "",
-      //   phone_number: "",
+      phone_number: "",
     },
     onSubmit: async ({ email, password, phone_number }) => {
       try {
@@ -38,7 +38,7 @@ const SignUpFrom = () => {
             const response = await axiosInstance.post("/auth/register", {
               email,
               password,
-              //   phone_number,
+              phone_number,
               //role: "tenant"
             })
 
@@ -68,7 +68,7 @@ const SignUpFrom = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string().required().email(),
-      //   phone_number: Yup.string().required(),
+      phone_number: Yup.string().required(),
       password: Yup.string()
         .required()
         .matches(
@@ -100,7 +100,7 @@ const SignUpFrom = () => {
           />
           <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
         </FormControl>
-        {/* <FormControl isInvalid={formik.errors.phone_number}>
+        <FormControl isInvalid={formik.errors.phone_number}>
           <FormInput
             label="Phone Number"
             type="text"
@@ -110,7 +110,7 @@ const SignUpFrom = () => {
             value={formik.values.phone_number}
           />
           <FormErrorMessage>{formik.errors.phone_number}</FormErrorMessage>
-        </FormControl> */}
+        </FormControl>
         <FormControl isInvalid={formik.errors.password}>
           <FormInput
             label="Password"

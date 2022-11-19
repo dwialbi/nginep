@@ -15,15 +15,13 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import { axiosInstance } from "../api"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { login } from "../redux/features/authSlice"
-import { signOutUser } from "../config/firebase"
+
 import { logout } from "../redux/features/authSlice"
 
 //===================firebase=====================
-import { signInWithEmailAndPassword } from "firebase/auth"
 import {
-  auth,
   signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../config/firebase"
@@ -33,7 +31,7 @@ import {
 
 const Login = () => {
   const dispatch = useDispatch()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const toast = useToast()
   const selector = useSelector((state) => state.auth)
 
@@ -41,8 +39,7 @@ const Login = () => {
   const logoutBtnHandler = () => {
     localStorage.removeItem("auth_token")
     dispatch(logout())
-
-    Navigate("/")
+    navigate("/")
   }
 
   //const {dispatch} = useContext(AuthContext)
