@@ -13,17 +13,16 @@ import {
 } from "@chakra-ui/react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { axiosInstance } from "../api"
+import { axiosInstance } from "../../api"
 import { useDispatch, useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
-import { login } from "../redux/features/authSlice"
-import { signOutUser } from "../config/firebase"
-import { logout } from "../redux/features/authSlice"
+import { login } from "../../redux/features/authSlice"
+
+import { logout } from "../../redux/features/authSlice"
 
 //===================firebase=====================
-import { signInWithEmailAndPassword } from "firebase/auth"
+
 import {
-  auth,
   signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../config/firebase"
@@ -71,10 +70,10 @@ const Login = () => {
       email: "",
       password: "",
     },
-    onSubmit: async ({ email, password }) => {
+    onSubmit: async ({ password, emailOrPhoneNumber }) => {
       try {
         const signInResult = await signInAuthUserWithEmailAndPassword(
-          email,
+          emailOrPhoneNumber,
           password
         )
 
@@ -89,6 +88,7 @@ const Login = () => {
           login({
             id: response.data.data.id,
             email: response.data.data.email,
+            phone_numberL: response.data.data.phone_number,
             // first_name: response.data.data.first_name,
             // last_name: response.data.data.last_name,
           })

@@ -3,6 +3,10 @@ const User = db.User
 const bcrypt = require("bcrypt")
 const { signToken } = require("../lib/jwt")
 const { verifyGoogleToken } = require("../lib/firebase")
+const {
+  validateVerificationToken,
+  createVerificationToken,
+} = require("../lib/verification")
 
 const authController = {
   registerUser: async (req, res) => {
@@ -63,13 +67,13 @@ const authController = {
       delete findUserByEmail.dataValues.password
 
       const token = signToken({
-        id: findUserByEmail.id
+        id: findUserByEmail.id,
       })
 
       return res.status(201).json({
         message: "User logged in",
         data: findUserByEmail,
-        token
+        token,
       })
     } catch (error) {
       console.log(error)
@@ -78,30 +82,78 @@ const authController = {
       })
     }
   },
-  refreshToken: async (req, res) => {},
+  refreshToken: async (req, res) => {
+    try {
+      const findUserById = await User.findByPk(req.user.id)
+
+      const renewedToken = signToken({
+        id: req.user.id,
+      })
+
+      return res.status(200).json({
+        message: "Renewed user token",
+        data: findUserById,
+        token: renewedToken,
+      })
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({
+        message: "Server error",
+      })
+    }
+  },
   loginWithGoogle: async (req, res) => {
     try {
       const { googleToken } = req.body
 
-      const {email} = await verifyGoogleToken(googleToken)
+      const { email } = await verifyGoogleToken(googleToken)
 
-      const [user, created] = await User.findOrCreate({
+      const [user] = await User.findOrCreate({
         where: { email },
       })
 
       const token = signToken({
-        id: user.id
+        id: user.id,
       })
 
       return res.status(201).json({
         message: "User logged in",
         data: user,
-        token
+        token,
       })
     } catch (error) {
       console.log(error)
       return res.status(500).json({
         message: "Server error",
+      })
+    }
+  },
+  verifyUser: async (req, res) => {
+    try {
+      const { verification_token } = req.query
+
+      const validToken = validateVerificationToken(verification_token)
+
+      if (!validToken) {
+        res.status(401).json({
+          message: "Token invalid",
+        })
+      }
+
+      await User.update(
+        { is_verified: true },
+        {
+          where: {
+            id: validToken.id,
+          },
+        }
+      )
+
+      return res.redirect("http://localhost:3000/login")
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({
+        message: "server error",
       })
     }
   },

@@ -1,6 +1,5 @@
 const { validateToken } = require("../lib/jwt")
 
-
 const verifyToken = (req, res, next) => {
   let token = req.headers.authorization
 
@@ -12,19 +11,20 @@ const verifyToken = (req, res, next) => {
 
   try {
     token = token.split(" ")[1]
+
     const verifiedUser = validateToken(token)
 
     if (!verifiedUser) {
-        return res.status(401).json({
-            message: "Unauthorized request"
-        })
+      return res.status(401).json({
+        message: "Unauthorized request",
+      })
     }
 
     req.user = verifiedUser
 
     next()
- 
-  } catch (error) {
+  } catch (err) {
+    console.log(err)
     return res.status(401).json({
       message: "Invalid token",
     })
@@ -32,6 +32,5 @@ const verifyToken = (req, res, next) => {
 }
 
 module.exports = {
-    verifyToken
+  verifyToken,
 }
-

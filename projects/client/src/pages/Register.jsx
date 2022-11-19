@@ -29,10 +29,10 @@ const Register = () => {
     initialValues: {
       email: "",
       password: "",
+      phone_number: "",
     },
     onSubmit: async ({ email, password }) => {
       try {
-
         //===================firebase=====================
 
         createUserWithEmailAndPassword(auth, email, password)
@@ -46,10 +46,9 @@ const Register = () => {
               password,
               //role: "tenant"
             })
-    
+
             navigate("/login")
-    
-    
+
             toast({
               title: "Registration successful",
               description: response.data.message,
@@ -63,8 +62,6 @@ const Register = () => {
           })
 
         //===================firebase=====================
-
-       
       } catch (err) {
         toast({
           title: "Registration failed",
@@ -76,6 +73,7 @@ const Register = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string().required().email(),
+      phone_number: Yup.boolean().required(),
       password: Yup.string()
         .required()
         .matches(

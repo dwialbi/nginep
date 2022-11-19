@@ -1,0 +1,15 @@
+.sign-up-container {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  justify-content: center;
+  /* align-items: center; */
+  height: 100vh;
+  margin-left: 400px;
+}
+.sign-up-container h1 {
+  font-size: 50px;
+}
+.sign-up-container h2 {
+  margin: 10px 0;
+}
