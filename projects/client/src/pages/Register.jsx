@@ -30,6 +30,7 @@ const Register = () => {
       email: "",
       password: "",
       phone_number: "",
+      role_id: "user",
     },
     onSubmit: async ({ email, password }) => {
       try {
@@ -44,7 +45,7 @@ const Register = () => {
             const response = await axiosInstance.post("/auth/register", {
               email,
               password,
-              //role: "tenant"
+              role_id: "user",
             })
 
             navigate("/login")
@@ -119,6 +120,7 @@ const Register = () => {
                 />
                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
+              <Input value={formik.values.role_id} type="hidden" />
               <Button type="submit" colorScheme="purple">
                 Register
               </Button>

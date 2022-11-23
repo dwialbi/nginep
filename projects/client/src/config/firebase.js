@@ -1,3 +1,4 @@
+import { Toast } from "@chakra-ui/react"
 import { initializeApp } from "firebase/app"
 import {
   getAuth,
@@ -38,6 +39,3 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 }
 
 export const signOutUser = async () => await signOut(auth)
-
-export const onAuthStateChangedListener = (callback) =>
-  onAuthStateChanged(auth, callback)

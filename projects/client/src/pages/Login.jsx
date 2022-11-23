@@ -25,6 +25,7 @@ import {
   signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../config/firebase"
+import { useEffect } from "react"
 //import { useContext } from "react"
 //import { AuthContext } from "../context/AuthContext"
 //===================firebase=====================
@@ -32,6 +33,7 @@ import {
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const authSelector = useSelector((state) => state.auth)
   const toast = useToast()
   const selector = useSelector((state) => state.auth)
 
@@ -44,6 +46,7 @@ const Login = () => {
 
   //const {dispatch} = useContext(AuthContext)
 
+  // LOGIN GOOGLE
   const signInWithGoogle = async () => {
     const result = await signInWithGooglePopup()
     const idToken = await result.user.getIdToken()
@@ -57,6 +60,7 @@ const Login = () => {
       login({
         id: response.data.data.id,
         email: response.data.data.email,
+        role: response.data.data.role,
         // first_name: response.data.data.first_name,
         // last_name: response.data.data.last_name,
       })
@@ -86,10 +90,14 @@ const Login = () => {
           login({
             id: response.data.data.id,
             email: response.data.data.email,
+            role: response.data.data.role,
+
             // first_name: response.data.data.first_name,
             // last_name: response.data.data.last_name,
           })
         )
+        // console.log(response)
+
         toast({
           title: "Login success",
           description: response.data.message,
@@ -114,6 +122,14 @@ const Login = () => {
   const formChangeHandler = ({ target }) => {
     const { name, value } = target
     formik.setFieldValue(name, value)
+  }
+
+  if (authSelector.role === "user") {
+    navigate("/")
+    // console.log("user")
+  } else if (authSelector.role === "tenant") {
+    navigate("/tenant")
+    // console.log("tenant")
   }
 
   return (

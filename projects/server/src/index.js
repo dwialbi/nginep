@@ -3,6 +3,7 @@ const express = require("express")
 const cors = require("cors")
 const { join } = require("path")
 const db = require("../models")
+const fs = require("fs")
 
 const PORT = process.env.PORT || 8000
 const app = express()
@@ -20,12 +21,15 @@ app.use(express.json())
 
 const authRoute = require("../routes/authRoute")
 const userRoute = require("../routes/userRoute")
+const tenantRoute = require("../routes/tenantRoute")
 
 const { verifyToken } = require("../middlewares/authMiddleware")
 
 app.use("/auth", authRoute)
 app.use("/user", verifyToken, userRoute)
+app.use("/tenant", tenantRoute)
 
+app.use("/public/propImg", express.static("public/propImg"))
 //#region API ROUTES
 
 // ===========================
@@ -80,6 +84,10 @@ app.listen(PORT, (err) => {
     console.log(`ERROR: ${err}`)
   } else {
     db.sequelize.sync({ alter: true })
+
+    if (!fs.existsSync("public")) {
+      fs.mkdirSync("public")
+    }
     console.log(`APP RUNNING at ${PORT} ✅`)
   }
 })

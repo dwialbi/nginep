@@ -4,12 +4,16 @@ import { useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { axiosInstance } from "./api"
+import Navbar from "./components/navbar/navbar.component"
+import SignInTenant from "./components/sign-in-form-Tenant/sign-in.component"
+import SignIn from "./components/sign-in-form/sign-in.component"
 import SignUpFrom from "./components/sign-up-form/sign-up.component"
 // import { AuthContext } from "./context/AuthContext"
 import Home from "./pages/Home"
-import Login from "./pages/Login"
+// import Login from "./pages/Login"
 import Profile from "./pages/Profile"
 import Register from "./pages/Register"
+import Tenant from "./pages/tenant"
 import { login } from "./redux/features/authSlice"
 
 function App() {
@@ -52,13 +56,18 @@ function App() {
   //===================context==================
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Register" element={<SignUpFrom />} />
-      <Route path="/signup" element={<Register />} />
-    </Routes>
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/Login" element={<SignIn />} />
+        <Route path="/Register" element={<SignUpFrom />} />
+        <Route path="/signup" element={<Register />} />
+        <Route path="/tenant" element={<Tenant />} />
+        <Route path="/loginTenant" element={<SignInTenant />} />
+      </Routes>
+    </div>
   )
 }
 

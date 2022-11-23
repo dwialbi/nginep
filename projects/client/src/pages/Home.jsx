@@ -5,10 +5,12 @@ import { signOutUser } from "../config/firebase"
 
 const Home = () => {
   return (
-    <Box>
+    <Box mt="100px">
       <Text>Home</Text>
       <Text>Hello</Text>
-      <Link to="/login">Login</Link>
+      <Link to="/login">Login USER</Link>
+      <br />
+      <Link to="/loginTenant">Login Tenant</Link>
       <br />
       <Link to="/register">Register</Link>
       <br />

@@ -1,5 +1,6 @@
 "use strict"
 const { Model } = require("sequelize")
+// const property = require("./property")
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -9,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // User.hasMany(models.Property)
     }
   }
   User.init(
@@ -20,9 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       phone_number: DataTypes.STRING,
       birthdate: DataTypes.DATE,
       profile_picture: DataTypes.STRING,
-      is_verified: DataTypes.BOOLEAN,
+      is_verified: {
+        defaultValue: false,
+        type: DataTypes.BOOLEAN,
+      },
       ktp: DataTypes.STRING,
-      role_id: DataTypes.INTEGER,
+      role: { type: DataTypes.STRING, defaultValue: "user" },
     },
     {
       sequelize,
