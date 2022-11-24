@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   PropertyImage.init(
     {
       image_url: { type: DataTypes.STRING, allowNull: false },
+      PropertyId: { type: DataTypes.INTEGER },
     },
     {
       sequelize,
