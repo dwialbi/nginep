@@ -10,9 +10,6 @@ import { useState } from "react"
 const PropertyForm = () => {
   const toast = useToast()
 
-  const [files, setFiles] = useState("")
-  const [filesProgress, setFilesProgress] = useState(0)
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -30,9 +27,9 @@ const PropertyForm = () => {
         newProperty.append("description", values.description)
         newProperty.append("cityId", values.cityId)
         newProperty.append("categoryId", values.categoryId)
-        // for (let i = 0; i < files.length; i++) {
-        newProperty.append("image_url", values.image_url)
-        // }
+        for (let i = 0; i < values.image_url.length; i++) {
+          newProperty.append("image_url", values.image_url[i])
+        }
         const response = await axiosInstance.post(
           "/tenant/property",
           newProperty
@@ -56,11 +53,6 @@ const PropertyForm = () => {
   const formChangeHandler = ({ target }) => {
     const { name, value } = target
     formik.setFieldValue(name, value)
-  }
-
-  const multipleChange = (e) => {
-    setFiles(e.target.files[0])
-    setFilesProgress(0)
   }
 
   return (
@@ -115,7 +107,7 @@ const PropertyForm = () => {
           type="file"
           accept="image/*"
           onChange={(event) => {
-            formik.setFieldValue("image_url", event.target.files[0])
+            formik.setFieldValue("image_url", event.target.files)
           }}
 
           // onSubmit={(e) => {
