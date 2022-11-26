@@ -34,7 +34,6 @@ app.use("/public/propImg", express.static("public/propImg"))
 
 // ===========================
 // NOTE : Add your routes here
-
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`)
 })

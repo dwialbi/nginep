@@ -47,6 +47,11 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="navbar-li">
+              <Link className="login-transform" to="/property-form">
+                Property
+              </Link>
+            </li>
+            <li className="navbar-li">
               <Link className="login-transform" to="/books">
                 Books
               </Link>

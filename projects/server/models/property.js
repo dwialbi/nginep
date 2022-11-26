@@ -11,11 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Property.belongsTo(models.Categories)
       Property.belongsTo(models.Cities)
-      Property.belongsTo(models.Categories)
       Property.belongsTo(models.User)
       Property.hasMany(models.PropertyItem)
       Property.hasMany(models.PropertyFacilities)
-      Property.hasMany(models.PropertyImage)
+      Property.hasMany(models.PropertyImage, { onDelete: "CASCADE" })
     }
   }
   Property.init(

@@ -1,6 +1,7 @@
 const db = require("../models")
 const { Op } = require("sequelize")
 const { sequelize } = require("../models")
+const User = db.User
 // const path = require("path")
 
 const tenantController = {
@@ -11,6 +12,7 @@ const tenantController = {
       const foundCategoryById = await db.Categories.findByPk(
         req.body.categoryId
       )
+      const foundUserById = await db.User.findByPk(req.user.id)
 
       if (!foundCityById || !foundCategoryById) {
         throw new Error("cities and category is not found")
@@ -23,8 +25,8 @@ const tenantController = {
           description: req.body.description,
           CityId: foundCityById.id,
           CategoryId: foundCategoryById.id,
-          UserId: "53", // dummy
-          // UserId: req.User.id
+          // UserId: "53", // dummy
+          UserId: foundUserById.id,
         }
         // { transaction: newProperty }
       )
@@ -130,50 +132,15 @@ const tenantController = {
   },
   TenantPropertyDelete: async (req, res, next) => {
     try {
-      // const foundPropById = await db.Property.findByPk(req.params.PropertyId)
+      await db.Property.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
 
-      return sequelize
-        .transaction((t) => {
-          return db.Property.destroy(
-            {
-              where: {
-                id: req.params.id,
-              },
-            },
-            { transaction: t }
-          ).then(() => {
-            return db.PropertyImage.destroy(
-              {
-                where: {
-                  PropertyId: req.params.id,
-                },
-              },
-              { transaction: t }
-            ).then((deletedImg) => {
-              return deletedImg
-            })
-          })
-        })
-        .then((result) => {
-          // console.log(result)
-          return res.status(200).json({
-            message: "Property deleted",
-            result,
-          })
-          // .catch((err) => {
-          //   return next(err)
-          // })
-        })
-      // ======================================================================
-      // await db.PropertyImage.destroy({
-      //   where: {
-      //     id: foundPropById.id,
-      //   },
-      // })
-      // ======================================================================
-      // return res.status(200).json({
-      //   message: "Property delete",
-      // })
+      return res.status(200).json({
+        message: "Property deleted",
+      })
     } catch (err) {
       console.log(err)
       return res.status(500).json({
@@ -183,21 +150,13 @@ const tenantController = {
   },
   TenantPropertyImageDelete: async (req, res) => {
     try {
-      // const findPropertyById = await db.Property.findByPk(req.property.id)
-
-      // if (!findPropertyById) {
-      //   return res.status(400).json({
-      //     message: "",
-      //   })
-      // }
-
       await db.PropertyImage.destroy({
         where: {
           id: req.params.id,
         },
       })
       return res.status(200).json({
-        message: "Image delete",
+        message: "Image deleted",
       })
     } catch (err) {
       console.log(err)

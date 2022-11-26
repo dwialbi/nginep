@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { axiosInstance } from "./api"
 import Navbar from "./components/navbar/navbar.component"
+import PropertyForm from "./components/property-form/property-form.component"
 import SignInTenant from "./components/sign-in-form-Tenant/sign-in.component"
 import SignIn from "./components/sign-in-form/sign-in.component"
 import SignUpFrom from "./components/sign-up-form/sign-up.component"
@@ -66,6 +67,7 @@ function App() {
         <Route path="/signup" element={<Register />} />
         <Route path="/tenant" element={<Tenant />} />
         <Route path="/loginTenant" element={<SignInTenant />} />
+        <Route path="/property-form" element={<PropertyForm />} />
       </Routes>
     </div>
   )

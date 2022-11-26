@@ -1,11 +1,13 @@
 const express = require("express")
 const tenantController = require("../controllers/tenantController")
 const { upload } = require("../lib/uploader")
+const { verifyToken } = require("../middlewares/authMiddleware")
 
 const router = express.Router()
 
 router.post(
   "/property",
+  verifyToken,
   upload({
     acceptedFileTypes: ["png", "jpeg", "jpg"],
     filePrefix: "image_url",
