@@ -101,7 +101,15 @@ const tenantController = {
     try {
       // const { id } = req.params
       // disimpan dalam vairabel dan akan dapat respon
+
       //
+
+      await db.Property.findOne({
+        where: {
+          id: req.params.id,
+        },
+      })
+
       await db.Property.update(
         { ...req.body },
         {
@@ -191,6 +199,37 @@ const tenantController = {
       console.log(err)
       res.status(500).json({
         message: req.message,
+      })
+    }
+  },
+  getAllCategories: async (req, res) => {
+    try {
+      const showAllCategory = await db.Categories.findAll()
+
+      return res.status(200).json({
+        data: showAllCategory,
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        message: err.message,
+      })
+    }
+  },
+  getPropertyById: async (req, res) => {
+    try {
+      const findPropById = await db.Property.findByPk(req.params.id, {
+        include: [{ model: db.PropertyImage }],
+      })
+
+      return res.status(200).json({
+        message: "Get Property",
+        data: findPropById,
+      })
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({
+        message: res.message,
       })
     }
   },

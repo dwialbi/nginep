@@ -15,6 +15,8 @@ router.post(
   tenantController.TenantPropertyPost
 )
 
+router.get("/property/:id", tenantController.getPropertyById)
+
 router.patch("/property/:id", tenantController.TenantPropertyUpdate)
 
 router.delete("/property/:id", tenantController.TenantPropertyDelete)

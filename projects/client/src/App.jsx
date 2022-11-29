@@ -4,8 +4,10 @@ import { useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { axiosInstance } from "./api"
+import EditProperty from "./components/editProperty/edit-property.component"
 import Navbar from "./components/navbar/navbar.component"
 import PropertyForm from "./components/property-form/property-form.component"
+import ListingDetails from "./components/PropertyList/property-list.compoenet"
 import SignInTenant from "./components/sign-in-form-Tenant/sign-in.component"
 import SignIn from "./components/sign-in-form/sign-in.component"
 import SignUpFrom from "./components/sign-up-form/sign-up.component"
@@ -68,6 +70,8 @@ function App() {
         <Route path="/tenant" element={<Tenant />} />
         <Route path="/loginTenant" element={<SignInTenant />} />
         <Route path="/property-form" element={<PropertyForm />} />
+        <Route path="/property/:id" element={<ListingDetails />} />
+        <Route path="/property/edit/:id" element={<EditProperty />} />
       </Routes>
     </div>
   )
