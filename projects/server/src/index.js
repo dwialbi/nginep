@@ -27,7 +27,7 @@ const { verifyToken } = require("../middlewares/authMiddleware")
 
 app.use("/auth", authRoute)
 app.use("/user", verifyToken, userRoute)
-app.use("/tenant", verifyToken, tenantRoute)
+app.use("/tenant", tenantRoute)
 
 app.use("/public/propImg", express.static("public/propImg"))
 //#region API ROUTES

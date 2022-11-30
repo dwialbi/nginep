@@ -7,7 +7,7 @@ const upload = ({
 }) => {
   const diskStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, "public")
+      cb(null, "public/propImg")
     },
     filename: (req, file, cb) => {
       const { originalname } = file

@@ -56,15 +56,22 @@ const tenantController = {
       const files = req.files
       let img_path = []
 
-      img_path = files.map((item) => item.path)
-      const propId = createdNewProperty.id
-      const newPropImg = img_path.map(
-        (item) => {
-          return { image_url: item, PropertyId: propId }
-        }
-        // { transaction: newProperty }
-      )
-      await db.PropertyImage.bulkCreate(newPropImg)
+      if (files) {
+        req.body.image_url = `http://localhost:8000/public/propImg/${req.files.filename}`
+
+        img_path = files.map((item) => item.path)
+        const propId = createdNewProperty.id
+        const newPropImg = img_path.map(
+          (item) => {
+            return {
+              image_url: `http://localhost:8000/${item}`,
+              PropertyId: propId,
+            }
+          }
+          // { transaction: newProperty }
+        )
+        await db.PropertyImage.bulkCreate(newPropImg)
+      }
       //========================== Dummy ========================================
 
       // for (let i = 0; i < img_url.length; i++) {
@@ -175,25 +182,21 @@ const tenantController = {
   },
   TenantPropertyImagePost: async (req, res) => {
     try {
-      const files = req.files
-      let img_path = []
-
-      img_path = files.map((item) => item.path)
-      const propId = db.Property.id
-      const newPropImg = img_path.map((item) => {
-        return { image_url: item, PropertyId: propId }
-      })
-      await db.PropertyImage.bulkCreate(newPropImg)
-
-      const foundPropertyById = await db.Property.findByPk(db.Property.id, {
-        include: [{ model: db.PropertyImage }, { model: db.User }],
+      await db.Property.findOne({
+        where: {
+          id: req.params.id,
+        },
       })
 
-      console.log(foundPropertyById)
+      const newImgProp = await db.PropertyImage.create({
+        image_url: `http://localhost:8000/public/propImg/${req.file.filename}`,
+        PropertyId: req.params.id,
+      })
 
+      console.log(req.file.filename)
       return res.status(201).json({
-        message: "Post new product",
-        data: foundPropertyById,
+        message: "Post new Image Property",
+        data: newImgProp,
       })
     } catch (err) {
       console.log(err)

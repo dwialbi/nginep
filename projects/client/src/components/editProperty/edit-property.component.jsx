@@ -2,18 +2,22 @@ import {
   Box,
   Button,
   Container,
+  Flex,
+  Grid,
+  GridItem,
   Image,
   Img,
   Input,
+  Text,
   Textarea,
   useToast,
 } from "@chakra-ui/react"
 import { useFormik } from "formik"
 import { useEffect } from "react"
 import { useState } from "react"
-import { Editor } from "react-draft-wysiwyg"
 import { useParams } from "react-router-dom"
 import { axiosInstance } from "../../api"
+import PostPropImg from "../postPropImg/post-prop-img.component"
 
 const EditProperty = () => {
   const [prop, setProp] = useState([])
@@ -24,7 +28,7 @@ const EditProperty = () => {
 
   const params = useParams()
 
-  // ==========================================================================
+  // ============================= GET Prop ID========================================
 
   const getProperty = async () => {
     try {
@@ -40,13 +44,25 @@ const EditProperty = () => {
   }
 
   console.log(propertyImage)
-  // ==========================================================================
+  // =============================== Delete IMG =======================================
+
+  const DeleteImg = async (id) => {
+    try {
+      await axiosInstance.delete(`/tenant/property/image/${id}`)
+      getProperty()
+      toast({ title: "Image deleted", status: "info" })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // =============================== Edit Prop =========================================
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      address: "",
-      description: "",
+      name: listing.name,
+      address: listing.address,
+      description: listing.description,
     },
     onSubmit: async ({ name, address, description }) => {
       try {
@@ -106,8 +122,9 @@ const EditProperty = () => {
           name="address"
         />
 
+        <Text>Description</Text>
         <Textarea
-          width="87vh"
+          width="98vh"
           height="20vh"
           label="Description"
           defaultValue={listing.description}
@@ -117,8 +134,27 @@ const EditProperty = () => {
           name="description"
         />
 
-        <Image src={"../../../../server/public" || propertyImage.image_url} />
         <Button type="submit">POST</Button>
+        {/* <Image src={"../../../../server/public" || propertyImage.image_url} /> */}
+
+        <Grid
+          templateColumns="repeat(2,1fr)"
+          display="flex"
+          flexWrap="wrap"
+          gap="10px"
+          spacing="10"
+        >
+          {/* <GridItem w="100%" h="10">
+            {propertyImage.map((val) => (
+              <Box>
+                <Image w="350px" src={val.image_url} />
+
+                <Button onClick={() => DeleteImg(val.id)}>delete</Button>
+              </Box>
+            ))}
+          </GridItem> */}
+          {/* <PostPropImg /> */}
+        </Grid>
       </form>
     </Box>
   )

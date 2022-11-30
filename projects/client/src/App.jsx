@@ -6,6 +6,7 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import { axiosInstance } from "./api"
 import EditProperty from "./components/editProperty/edit-property.component"
 import Navbar from "./components/navbar/navbar.component"
+import PostPropImg from "./components/postPropImg/post-prop-img.component"
 import PropertyForm from "./components/property-form/property-form.component"
 import ListingDetails from "./components/PropertyList/property-list.compoenet"
 import SignInTenant from "./components/sign-in-form-Tenant/sign-in.component"
@@ -72,6 +73,7 @@ function App() {
         <Route path="/property-form" element={<PropertyForm />} />
         <Route path="/property/:id" element={<ListingDetails />} />
         <Route path="/property/edit/:id" element={<EditProperty />} />
+        <Route path="/property/image/:id" element={<PostPropImg />} />
       </Routes>
     </div>
   )

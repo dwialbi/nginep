@@ -24,11 +24,12 @@ router.delete("/property/:id", tenantController.TenantPropertyDelete)
 router.delete("/property/image/:id", tenantController.TenantPropertyImageDelete)
 
 router.post(
-  "/property/image",
+  "/property/image/:id",
+  // verifyToken,
   upload({
     acceptedFileTypes: ["png", "jpeg", "jpg"],
     filePrefix: "image_url",
-  }).array("image_url", 5),
+  }).single("image_url"),
   tenantController.TenantPropertyImagePost
 )
 
