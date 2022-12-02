@@ -1,4 +1,5 @@
 const express = require("express")
+const { getAllCategories } = require("../controllers/tenantController")
 const tenantController = require("../controllers/tenantController")
 const { upload } = require("../lib/uploader")
 const { verifyToken } = require("../middlewares/authMiddleware")
@@ -22,6 +23,9 @@ router.patch("/property/:id", tenantController.TenantPropertyUpdate)
 router.delete("/property/:id", tenantController.TenantPropertyDelete)
 
 router.delete("/property/image/:id", tenantController.TenantPropertyImageDelete)
+
+router.get("/category", tenantController.getAllCategories)
+router.get("/cities", tenantController.getAllCities)
 
 router.post(
   "/property/image/:id",

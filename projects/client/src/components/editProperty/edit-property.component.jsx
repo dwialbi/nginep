@@ -17,15 +17,10 @@ import { useEffect } from "react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { axiosInstance } from "../../api"
-import PostPropImg from "../postPropImg/post-prop-img.component"
 
 const EditProperty = () => {
-  const [prop, setProp] = useState([])
   const [listing, setListing] = useState([])
-  const [propertyImage, setPropertyImage] = useState([])
-
   const toast = useToast()
-
   const params = useParams()
 
   // ============================= GET Prop ID========================================
@@ -36,25 +31,14 @@ const EditProperty = () => {
         `tenant/property/${params.id}`
       )
       setListing(responseProp.data.data)
-      setPropertyImage(responseProp.data.data.PropertyImages)
+      // setPropertyImage(responseProp.data.data.PropertyImages)
       console.log(responseProp.data.data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  console.log(propertyImage)
-  // =============================== Delete IMG =======================================
-
-  const DeleteImg = async (id) => {
-    try {
-      await axiosInstance.delete(`/tenant/property/image/${id}`)
-      getProperty()
-      toast({ title: "Image deleted", status: "info" })
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // console.log(propertyImage)
 
   // =============================== Edit Prop =========================================
 
@@ -102,60 +86,91 @@ const EditProperty = () => {
     getProperty()
   }, [])
   return (
-    // <Container>
-    <Box mt="150px">
-      <form onSubmit={formik.handleSubmit}>
-        <Input
-          label="Property Name"
-          type="text"
-          defaultValue={listing.name}
-          required
-          onChange={formChangeHandler}
-          name="name"
-        />
-        <Input
-          label="Address"
-          type="text"
-          required
-          defaultValue={listing.address}
-          onChange={formChangeHandler}
-          name="address"
-        />
+    <Box
+      mt="150px"
+      // ml="5px"
+      // right="50%"
+      left={{ base: "0", sm: "10%" }}
+      maxW="71vh"
+      minW="20vh"
+      w={{ base: "55vh", sm: "71vh" }}
+      position="absolute"
+      ml="5px"
+      // mr="10px"
+      // margin="auto"
+      // textAlign="center"
+      // alignContent="center"
+      // alignSelf="center"
+      // justifyContent="center"
+    >
+      <Text as="b" fontSize="xx-large" mb="50px">
+        {" "}
+        Edit Property Form
+      </Text>
+      <Box
+        borderRadius="8px"
+        alignContent="center"
+        justifyContent="center"
+        border="1px solid black"
+        mt="20px"
+        mr="-10px"
+        height={{ base: "60vh", sm: "39vh" }}
+      >
+        <form onSubmit={formik.handleSubmit}>
+          <Box mb="20px" mt="22px" maxW="70vh" minW="20vh" ml="10px">
+            <Text as="b" fontSize="16px">
+              Property Name
+            </Text>
+            <Input
+              label="Property Name"
+              type="text"
+              defaultValue={listing.name}
+              required
+              onChange={formChangeHandler}
+              name="name"
+            />
+          </Box>
+          <Box mb="20px" w="70vh" ml="10px" marginRight="20px">
+            <Text as="b" fontSize="16px">
+              Address
+            </Text>
+            <Input
+              label="Address"
+              type="text"
+              required
+              defaultValue={listing.address}
+              onChange={formChangeHandler}
+              name="address"
+            />
+          </Box>
+          <Box w="70vh" mb="20px" ml="10px" mr="5px">
+            <Text as="b" fontSize="16px">
+              Description
+            </Text>
+            <Textarea
+              h="15vh"
+              label="Description"
+              defaultValue={listing.description}
+              type="text"
+              required
+              onChange={formChangeHandler}
+              name="description"
+            />
+          </Box>
 
-        <Text>Description</Text>
-        <Textarea
-          width="98vh"
-          height="20vh"
-          label="Description"
-          defaultValue={listing.description}
-          type="text"
-          required
-          onChange={formChangeHandler}
-          name="description"
-        />
+          <Button ml="10px" type="submit">
+            POST
+          </Button>
 
-        <Button type="submit">POST</Button>
-        {/* <Image src={"../../../../server/public" || propertyImage.image_url} /> */}
-
-        <Grid
-          templateColumns="repeat(2,1fr)"
-          display="flex"
-          flexWrap="wrap"
-          gap="10px"
-          spacing="10"
-        >
-          {/* <GridItem w="100%" h="10">
-            {propertyImage.map((val) => (
-              <Box>
-                <Image w="350px" src={val.image_url} />
-
-                <Button onClick={() => DeleteImg(val.id)}>delete</Button>
-              </Box>
-            ))}
-          </GridItem> */}
-          {/* <PostPropImg /> */}
-        </Grid>
-      </form>
+          <Grid
+            templateColumns="repeat(2,1fr)"
+            display="flex"
+            flexWrap="wrap"
+            gap="10px"
+            spacing="10"
+          ></Grid>
+        </form>
+      </Box>
     </Box>
   )
 }

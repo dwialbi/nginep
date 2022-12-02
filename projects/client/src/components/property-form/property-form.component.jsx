@@ -3,8 +3,11 @@ import { axiosInstance } from "../../api/index"
 import "./property-form.styles.css"
 import { useFormik } from "formik"
 import {
+  Box,
+  CloseButton,
   Flex,
   HStack,
+  Image,
   Input,
   Select,
   Stack,
@@ -17,12 +20,37 @@ import Button from "../button/button.component"
 import { useState } from "react"
 import { useRef } from "react"
 import { BsUpload } from "react-icons/bs"
+import { useEffect } from "react"
 
 const PropertyForm = () => {
   const toast = useToast()
   // ==================================================================================================
   const inputFileRef = useRef()
   const [selectedImages, setSelectedImages] = useState([])
+  const [category, setCategory] = useState([])
+  const [cities, setCities] = useState([])
+
+  // ========================================= Get Category =============================================
+
+  const getCategory = async () => {
+    try {
+      const responseCategory = await axiosInstance.get("/tenant/category")
+      setCategory(responseCategory.data.data)
+      console.log(responseCategory.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // ========================================= Get Cities =============================================
+  const getCities = async () => {
+    try {
+      const responseCities = await axiosInstance.get("/tenant/cities")
+      setCities(responseCities.data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   // ==================================================================================================
   const formik = useFormik({
@@ -49,7 +77,7 @@ const PropertyForm = () => {
           "/tenant/property",
           newProperty
         )
-        console.log(response)
+        // console.log(response)
 
         toast({
           title: "Property successful added",
@@ -91,9 +119,17 @@ const PropertyForm = () => {
     URL.revokeObjectURL(image)
   }
 
+  useEffect(() => {
+    getCategory()
+  }, [])
+
+  useEffect(() => {
+    getCities()
+  }, [])
+
   return (
     <div className="property-form-container">
-      <h1>PropertyForm</h1>
+      <h1>Register Your Property Here</h1>
       <br />
       <form onSubmit={formik.handleSubmit}>
         <FormInput
@@ -115,7 +151,7 @@ const PropertyForm = () => {
         <Text>Description</Text>
         <br />
         <Textarea
-          width="87vh"
+          width={{ base: "45vh", sm: "87vh" }}
           height="20vh"
           label="Description"
           type="text"
@@ -140,11 +176,13 @@ const PropertyForm = () => {
                 name="categoryId"
                 value={formik.values.categoryId}
               >
-                <option value={0}>-- Select Category --</option>
-                <option value="1">hehehe</option>
-                <option value={2}>Hehe</option>
+                <option>-- Select Category --</option>
+                {category.map((val) => (
+                  <option value={val.id}>{val.category_name}</option>
+                ))}
+                {/* <option value={2}>Hehe</option>
                 <option>Hehe</option>
-                <option>Hehe</option>
+                <option>Hehe</option> */}
               </Select>
             </HStack>
           </Stack>
@@ -162,16 +200,14 @@ const PropertyForm = () => {
                 value={formik.values.cityId}
               >
                 <option value={0}>-- Select City --</option>
-                <option value="1">hahaha</option>
-                <option value={2}>Hihi</option>
-                <option>Hehe</option>
-                <option>Hehe</option>
+                {cities.map((val) => (
+                  <option value={val.id}>{val.cities_name}</option>
+                ))}
               </Select>
             </HStack>
           </Stack>
         </HStack>
         <div className="card-container">
-          <h4>Upload Your Image</h4>
           <Input
             label="Image"
             multiple={true}
@@ -185,14 +221,15 @@ const PropertyForm = () => {
             display="none"
             ref={inputFileRef}
           />
-          <Flex
+          <Box
             width="max-content"
             gap="2"
             alignItems="center"
             justifyContent="center"
             margin="auto"
+            ml={{ base: "-10px", md: "30vh" }}
           >
-            <Button type="submit">Register</Button>
+            <h4>Upload Your Image</h4>
             <label
               className="label-btn"
               onClick={() => inputFileRef.current.click()}
@@ -200,7 +237,8 @@ const PropertyForm = () => {
               <BsUpload />
               Choose a Image
             </label>
-          </Flex>
+            <Button type="submit">Register</Button>
+          </Box>
           <br />
           {/* ===================================================================================== */}
 
@@ -208,14 +246,24 @@ const PropertyForm = () => {
             {selectedImages &&
               selectedImages.map((image, index) => {
                 return (
-                  <div key={image} className="image-container">
-                    <img src={image} alt="upload" />
-                    <span
+                  <div className="image-container">
+                    <CloseButton
+                      ml="480px"
+                      mt="8px"
+                      pos="absolute"
+                      border="none"
+                      color="white"
                       className="delete-btn"
                       onClick={() => deleteHandler(image)}
-                    >
-                      &times;
-                    </span>
+                    />
+                    <Image
+                      // boxSize="20px"
+                      width="350px"
+                      objectFit="cover"
+                      src={image}
+                      alt="upload"
+                    />
+
                     {/* <button onClick={() => deleteHandler(image)}>
                       delete image
                     </button> */}
