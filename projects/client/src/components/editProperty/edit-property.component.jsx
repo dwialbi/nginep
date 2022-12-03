@@ -48,13 +48,14 @@ const EditProperty = () => {
       address: listing.address,
       description: listing.description,
     },
-    onSubmit: async ({ name, address, description }) => {
+    onSubmit: async ({ name, address, description, rules }) => {
       try {
         const response = await axiosInstance.patch(
           `/tenant/property/${params.id}`,
           {
             name,
             address,
+            rules,
             description,
           }
         )
@@ -108,13 +109,13 @@ const EditProperty = () => {
         Edit Property Form
       </Text>
       <Box
-        borderRadius="8px"
+        // borderRadius="8px"
         alignContent="center"
         justifyContent="center"
-        border="1px solid black"
+        // border="1px solid black"
         mt="20px"
         mr="-10px"
-        height={{ base: "60vh", sm: "39vh" }}
+        height={{ base: "80vh", sm: "58vh" }}
       >
         <form onSubmit={formik.handleSubmit}>
           <Box mb="20px" mt="22px" maxW="70vh" minW="20vh" ml="10px">
@@ -141,6 +142,20 @@ const EditProperty = () => {
               defaultValue={listing.address}
               onChange={formChangeHandler}
               name="address"
+            />
+          </Box>
+          <Box w="70vh" mb="20px" ml="10px" mr="5px">
+            <Text as="b" fontSize="16px">
+              Rules
+            </Text>
+            <Textarea
+              h="15vh"
+              label="rules"
+              defaultValue={listing.rules}
+              type="text"
+              required
+              onChange={formChangeHandler}
+              name="rules"
             />
           </Box>
           <Box w="70vh" mb="20px" ml="10px" mr="5px">

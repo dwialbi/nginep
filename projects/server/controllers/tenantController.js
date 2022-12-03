@@ -1,4 +1,5 @@
 const db = require("../models")
+const fs = require("fs")
 const { Op } = require("sequelize")
 const { sequelize } = require("../models")
 const User = db.User
@@ -22,6 +23,7 @@ const tenantController = {
         {
           name: req.body.name,
           address: req.body.address,
+          rules: req.body.rules,
           description: req.body.description,
           CityId: foundCityById.id,
           CategoryId: foundCategoryById.id,
@@ -170,6 +172,7 @@ const tenantController = {
           id: req.params.id,
         },
       })
+
       return res.status(200).json({
         message: "Image deleted",
       })

@@ -12,7 +12,7 @@ router.post(
   upload({
     acceptedFileTypes: ["png", "jpeg", "jpg"],
     filePrefix: "image_url",
-  }).array("image_url", 5),
+  }).array("image_url", 6),
   tenantController.TenantPropertyPost
 )
 

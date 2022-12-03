@@ -57,6 +57,7 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   text-align: center;
+  grid-gap: 10px;
 }
 
 .image-container {
@@ -68,11 +69,11 @@
   flex-wrap: wrap;
   position: relative;
 }
-.image-container img {
-  height: 90%;
+/* .image-container img {
+  height: 100%;
   width: auto;
   object-fit: cover;
-}
+} */
 .image-container span {
   top: -8px;
   right: 15px;

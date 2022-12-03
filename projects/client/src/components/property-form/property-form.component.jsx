@@ -3,6 +3,7 @@ import { axiosInstance } from "../../api/index"
 import "./property-form.styles.css"
 import { useFormik } from "formik"
 import {
+  Alert,
   Box,
   CloseButton,
   Flex,
@@ -57,6 +58,7 @@ const PropertyForm = () => {
     initialValues: {
       name: "",
       address: "",
+      rules: "",
       description: "",
       cityId: "",
       categoryId: "",
@@ -67,6 +69,7 @@ const PropertyForm = () => {
         let newProperty = new FormData()
         newProperty.append("name", values.name)
         newProperty.append("address", values.address)
+        newProperty.append("rules", values.rules)
         newProperty.append("description", values.description)
         newProperty.append("cityId", values.cityId)
         newProperty.append("categoryId", values.categoryId)
@@ -77,7 +80,6 @@ const PropertyForm = () => {
           "/tenant/property",
           newProperty
         )
-        // console.log(response)
 
         toast({
           title: "Property successful added",
@@ -86,6 +88,7 @@ const PropertyForm = () => {
         })
       } catch (err) {
         console.log(err)
+
         toast({
           title: "Added new property failed",
           description: err.response.message,
@@ -121,9 +124,6 @@ const PropertyForm = () => {
 
   useEffect(() => {
     getCategory()
-  }, [])
-
-  useEffect(() => {
     getCities()
   }, [])
 
@@ -148,10 +148,27 @@ const PropertyForm = () => {
           name="address"
           value={formik.values.address}
         />
+        <Text>Rules</Text>
+        <br />
+        <Textarea
+          // width={{ base: "45vh", sm: "85vh" }}
+          display="block"
+          width="90%"
+          height="20vh"
+          label="rules"
+          type="text"
+          required
+          onChange={formChangeHandler}
+          name="rules"
+          value={formik.values.rules}
+        />
+
         <Text>Description</Text>
         <br />
         <Textarea
-          width={{ base: "45vh", sm: "87vh" }}
+          display="block"
+          // width={{ base: "45vh", sm: "85vh" }}
+          width="90%"
           height="20vh"
           label="Description"
           type="text"
@@ -168,8 +185,6 @@ const PropertyForm = () => {
             <Text>Category</Text>
             <HStack width="100%">
               <Select
-                // label="CategoryId"
-                variant="flushed"
                 type="text"
                 required
                 onChange={formChangeHandler}
@@ -180,9 +195,6 @@ const PropertyForm = () => {
                 {category.map((val) => (
                   <option value={val.id}>{val.category_name}</option>
                 ))}
-                {/* <option value={2}>Hehe</option>
-                <option>Hehe</option>
-                <option>Hehe</option> */}
               </Select>
             </HStack>
           </Stack>
@@ -199,7 +211,7 @@ const PropertyForm = () => {
                 name="cityId"
                 value={formik.values.cityId}
               >
-                <option value={0}>-- Select City --</option>
+                <option value={0}> -- Select City --</option>
                 {cities.map((val) => (
                   <option value={val.id}>{val.cities_name}</option>
                 ))}
@@ -248,25 +260,25 @@ const PropertyForm = () => {
                 return (
                   <div className="image-container">
                     <CloseButton
-                      ml="480px"
+                      ml={{ base: "129px", sm: "41vh" }}
                       mt="8px"
                       pos="absolute"
                       border="none"
                       color="white"
                       className="delete-btn"
+                      cursor="pointer"
                       onClick={() => deleteHandler(image)}
                     />
                     <Image
-                      // boxSize="20px"
-                      width="350px"
+                      // boxSize="20px
+                      borderRadius="10px"
+                      width="fit-content"
+                      boxSize="100%"
+                      // height="100%"
                       objectFit="cover"
                       src={image}
                       alt="upload"
                     />
-
-                    {/* <button onClick={() => deleteHandler(image)}>
-                      delete image
-                    </button> */}
                   </div>
                 )
               })}

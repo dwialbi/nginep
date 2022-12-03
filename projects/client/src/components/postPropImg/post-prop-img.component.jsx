@@ -2,6 +2,7 @@ import {
   AvatarBadge,
   Box,
   Button,
+  Center,
   CloseButton,
   Flex,
   Grid,
@@ -14,12 +15,16 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  SimpleGrid,
   Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react"
+import { ArrowBackIcon } from "@chakra-ui/icons"
+import "./post-prop-img.styles.css"
 import { useEffect, useRef, useState } from "react"
-import { useParams } from "react-router-dom"
+import { BsUpload } from "react-icons/bs"
+import { useNavigate, useParams } from "react-router-dom"
 import { axiosInstance } from "../../api"
 
 const PostPropImg = () => {
@@ -27,7 +32,7 @@ const PostPropImg = () => {
   const inputFileRef = useRef()
   const submitRef = useRef()
   const params = useParams()
-
+  const navigate = useNavigate()
   const [propertyImage, setPropertyImage] = useState([])
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -47,6 +52,8 @@ const PostPropImg = () => {
     try {
       await axiosInstance.delete(`/tenant/property/image/${id}`)
       getProperty()
+      // window.location.reload(false)
+      // navigate(0)
       toast({ title: "Image deleted", status: "info" })
     } catch (err) {
       console.log(err)
@@ -72,7 +79,6 @@ const PostPropImg = () => {
     } catch (err) {
       console.log(err)
     }
-    console.log(event)
   }
   // ===================================================================================
 
@@ -80,11 +86,36 @@ const PostPropImg = () => {
     getProperty()
   }, [])
   return (
-    <Box mt="150px" ml="5px">
-      <Text as="b" fontSize="xx-large">
-        Update Your Images
-      </Text>
-      <Box mt="50px" mb="20px">
+    <Box
+      mt="100px"
+      ml="10px"
+      w={{ base: "54vh", md: "76vh" }}
+      // textAlign={{ base: "center", md: "center" }}
+      // border="1px solid black"
+    >
+      <ArrowBackIcon
+        mr="70vh"
+        mt="15px"
+        fontSize="25px"
+        onClick={() => {
+          navigate(-1)
+        }}
+      />
+      <Box
+        // mt="50px"
+        // mb="20px"
+        margin={{ base: "50px 10px 50px ", md: "30px auto 30px" }}
+        width="50%"
+        // justifyContent="center"
+        // alignItems="center"
+      >
+        <Text as="b" fontSize="xx-large" position="absolute" ml="20px">
+          Update Your Images
+        </Text>
+        <br />
+        <br />
+        <br />
+
         <Input
           label="Image"
           name="image_url"
@@ -96,64 +127,91 @@ const PostPropImg = () => {
           display="none"
           ref={inputFileRef}
         />
-        <Button
+        <button
+          className="btn-img-update"
           onClick={() => {
             inputFileRef.current.click()
             submitRef.current.click()
           }}
         >
-          Choose Images
-        </Button>
+          <Flex gap="10px">
+            <Center>
+              <BsUpload />
+            </Center>
+            <Text>Choose Images</Text>
+          </Flex>
+        </button>
       </Box>
-      <Grid
-        templateColumns="repeat(2,1fr)"
-        display="flex"
-        flexWrap="wrap"
-        gap="10px"
-        spacing="10"
-      >
-        <GridItem w="100%" h="10">
-          {/* <Flex p={50} w="full" alignItems="center" justifyContent="center"> */}
-          {propertyImage.map((val) => (
-            <Box
-              maxW="sm"
-              borderWidth="1px"
-              rounded="lg"
-              shadow="370px"
-              position="relative"
-            >
-              <CloseButton
-                ml="310px"
-                pos="absolute"
-                border="none"
-                color="white"
-                colors
-                onClick={onOpen}
-              />
-              <Image rounded="lg" w="350px" src={val.image_url} />
-              <Modal isCentered isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <Text textAlign="center" mb="50px">
-                      APUS OPO ORA
-                    </Text>
+      {/* <Flex p={50} w="full" alignItems="center" justifyContent="center"> */}
+
+      <SimpleGrid columns={2} spacingY="20px">
+        {propertyImage.map((val) => (
+          <Box
+            maxW="sm"
+            borderWidth="1px"
+            rounded="lg"
+            shadow="370px"
+            display="flex"
+            p="4px"
+            mb="24px"
+            boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 20px"}
+            borderRadius="8px"
+            // border="1px solid red"
+          >
+            <CloseButton
+              ml={{ base: "135px", md: "335px" }}
+              mt="5px"
+              position="absolute"
+              border="none"
+              color="white"
+              colors
+              onClick={onOpen}
+            />
+            <Image
+              borderRadius="8px"
+              width="100%"
+              h="100%"
+              objectFit="cover"
+              src={val.image_url}
+            />
+            <Modal isCentered isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent mb="250px">
+                <ModalCloseButton border="none" />
+                <ModalBody>
+                  <Text
+                    mt="30px"
+                    textAlign="center"
+                    mb="50px"
+                    fontSize="20px"
+                    fontWeight="bold"
+                  >
+                    Are you sure want to delete this image?
+                  </Text>
+                  <Center>
                     <Button
-                      alignSelf="center"
-                      justifyContent="center"
-                      onClick={() => DeleteImg(val.id)}
+                      width="200px"
+                      color="white"
+                      bgColor="red.500"
+                      borderRadius="8px"
+                      onClick={() => {
+                        DeleteImg(val.id)
+                        onClose()
+                      }}
+                      _hover={{
+                        bgColor: "red.600",
+                        borderRadius: "8px",
+                      }}
                     >
-                      APUS COK!
+                      Delete
                     </Button>
-                  </ModalBody>
-                </ModalContent>
-              </Modal>
-            </Box>
-          ))}
-          {/* </Flex> */}
-        </GridItem>
-      </Grid>
+                  </Center>
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+          </Box>
+        ))}
+      </SimpleGrid>
     </Box>
   )
 }
