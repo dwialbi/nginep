@@ -58,22 +58,21 @@ const tenantController = {
       const files = req.files
       let img_path = []
 
-      if (files) {
-        req.body.image_url = `http://localhost:8000/public/propImg/${req.files.filename}`
-
-        img_path = files.map((item) => item.path)
-        const propId = createdNewProperty.id
-        const newPropImg = img_path.map(
-          (item) => {
-            return {
-              image_url: `http://localhost:8000/${item}`,
-              PropertyId: propId,
-            }
+      img_path = files.map((item) => item.filename)
+      // console.log(files)
+      const propId = createdNewProperty.id
+      const newPropImg = img_path.map(
+        (item) => {
+          return {
+            // image_url: `http://localhost:8000/${item}`,
+            image_url: item,
+            PropertyId: propId,
           }
-          // { transaction: newProperty }
-        )
-        await db.PropertyImage.bulkCreate(newPropImg)
-      }
+        }
+        // { transaction: newProperty }
+      )
+      await db.PropertyImage.bulkCreate(newPropImg)
+
       //========================== Dummy ========================================
 
       // for (let i = 0; i < img_url.length; i++) {
@@ -147,13 +146,31 @@ const tenantController = {
       })
     }
   },
-  TenantPropertyDelete: async (req, res, next) => {
+  TenantPropertyDelete: async (req, res) => {
+    const pathProp = "public/propImg/"
+
+    // const fileName = await db.Property.findOne({
+    //   where: {
+    //     id: req.params.id,
+    //   },
+    //   include: [{ model: db.PropertyImage, as: "PropertyId" }],
+    // })
+    const fileName = await db.PropertyImage.findAll({
+      where: {
+        PropertyId: req.params.id,
+      },
+    })
+    console.log(fileName)
+
     try {
       await db.Property.destroy({
         where: {
           id: req.params.id,
         },
       })
+      for (let i = 0; i < fileName.length; i++) {
+        fs.unlinkSync(pathProp + fileName[i].image_url)
+      }
 
       return res.status(200).json({
         message: "Property deleted",
@@ -166,12 +183,22 @@ const tenantController = {
     }
   },
   TenantPropertyImageDelete: async (req, res) => {
+    const path = "public/propImg/"
+
+    const fileName = await db.PropertyImage.findOne({
+      where: {
+        id: req.params.id,
+      },
+    })
+    console.log(fileName)
+
     try {
       await db.PropertyImage.destroy({
         where: {
           id: req.params.id,
         },
       })
+      fs.unlinkSync(path + fileName.image_url)
 
       return res.status(200).json({
         message: "Image deleted",
@@ -192,7 +219,8 @@ const tenantController = {
       })
 
       const newImgProp = await db.PropertyImage.create({
-        image_url: `http://localhost:8000/public/propImg/${req.file.filename}`,
+        // image_url: `public/propImg/${req.file.filename}`,
+        image_url: req.file.filename,
         PropertyId: req.params.id,
       })
 

@@ -5,6 +5,7 @@ import { useFormik } from "formik"
 import {
   Alert,
   Box,
+  Center,
   CloseButton,
   Flex,
   HStack,
@@ -161,9 +162,10 @@ const PropertyForm = () => {
           onChange={formChangeHandler}
           name="rules"
           value={formik.values.rules}
+          borderColor="grey"
         />
 
-        <Text>Description</Text>
+        <Text mt="40px">Description</Text>
         <br />
         <Textarea
           display="block"
@@ -176,12 +178,13 @@ const PropertyForm = () => {
           onChange={formChangeHandler}
           name="description"
           value={formik.values.description}
+          borderColor="grey"
         />
 
         <HStack mt="5">
           {/* ================================ Category =================================== */}
 
-          <Stack width="45.5%">
+          <Stack width="44.75%">
             <Text>Category</Text>
             <HStack width="100%">
               <Select
@@ -200,7 +203,7 @@ const PropertyForm = () => {
           </Stack>
           {/* ================================ CITY =================================== */}
 
-          <Stack width="45.5%">
+          <Stack width="44.75%">
             <Text>City</Text>
             <HStack width="100%">
               <Select
@@ -219,7 +222,7 @@ const PropertyForm = () => {
             </HStack>
           </Stack>
         </HStack>
-        <div className="card-container">
+        <Box width="90%" mt="40px">
           <Input
             label="Image"
             multiple={true}
@@ -233,57 +236,93 @@ const PropertyForm = () => {
             display="none"
             ref={inputFileRef}
           />
+          {/* <Center> */}
           <Box
             width="max-content"
             gap="2"
-            alignItems="center"
-            justifyContent="center"
             margin="auto"
-            ml={{ base: "-10px", md: "30vh" }}
+            // ml={{ base: "-10px", md: "30vh" }}
           >
-            <h4>Upload Your Image</h4>
+            <Text
+              fontWeight="bold"
+              fontSize="20px"
+              textAlign="center"
+              mb="15px"
+            >
+              Upload Your Image
+            </Text>
             <label
               className="label-btn"
               onClick={() => inputFileRef.current.click()}
             >
-              <BsUpload />
-              Choose a Image
+              <Flex gap="10px">
+                <Center>
+                  <BsUpload />
+                </Center>
+                <Text>Choose Images</Text>
+              </Flex>
             </label>
             <Button type="submit">Register</Button>
+            {/* </Center> */}
           </Box>
+
           <br />
           {/* ===================================================================================== */}
 
-          <div className="images">
+          {/* <div className="images"> */}
+          {/* <Center> */}
+          <Box
+            position="relative"
+            display="grid"
+            gridTemplateColumns="repeat(2, 1fr)"
+            justifyContent="space-evenly"
+            textAlign="center"
+            gridGap="10px"
+          >
             {selectedImages &&
               selectedImages.map((image, index) => {
                 return (
-                  <div className="image-container">
+                  // <div className="image-container">
+                  <Box
+                    // maxW="fit-content"
+                    // minW="100%"
+                    w="100%"
+                    borderWidth="1px"
+                    rounded="lg"
+                    shadow="370px"
+                    display="flex"
+                    p="4px"
+                    mb="24px"
+                    boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 20px"}
+                    borderRadius="8px"
+                  >
                     <CloseButton
-                      ml={{ base: "129px", sm: "41vh" }}
+                      ml={{ base: "129px", md: "38vh" }}
                       mt="8px"
-                      pos="absolute"
+                      position="absolute"
                       border="none"
                       color="white"
                       className="delete-btn"
                       cursor="pointer"
+                      size="sm"
                       onClick={() => deleteHandler(image)}
                     />
                     <Image
-                      // boxSize="20px
-                      borderRadius="10px"
-                      width="fit-content"
+                      borderRadius="8px"
                       boxSize="100%"
-                      // height="100%"
                       objectFit="cover"
                       src={image}
                       alt="upload"
                     />
-                  </div>
+                    {/* </div> */}
+                  </Box>
                 )
               })}
-          </div>
-        </div>
+          </Box>
+
+          {/* </div> */}
+          {/* </Center> */}
+        </Box>
 
         {/* ================================================================================================ */}
       </form>
