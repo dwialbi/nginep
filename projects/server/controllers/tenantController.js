@@ -149,12 +149,6 @@ const tenantController = {
   TenantPropertyDelete: async (req, res) => {
     const pathProp = "public/propImg/"
 
-    // const fileName = await db.Property.findOne({
-    //   where: {
-    //     id: req.params.id,
-    //   },
-    //   include: [{ model: db.PropertyImage, as: "PropertyId" }],
-    // })
     const fileName = await db.PropertyImage.findAll({
       where: {
         PropertyId: req.params.id,
@@ -183,6 +177,7 @@ const tenantController = {
     }
   },
   TenantPropertyImageDelete: async (req, res) => {
+    // console.log(fileName)
     const path = "public/propImg/"
 
     const fileName = await db.PropertyImage.findOne({
@@ -190,7 +185,6 @@ const tenantController = {
         id: req.params.id,
       },
     })
-    console.log(fileName)
 
     try {
       await db.PropertyImage.destroy({
@@ -266,13 +260,23 @@ const tenantController = {
   },
   getPropertyById: async (req, res) => {
     try {
-      const findPropById = await db.Property.findByPk(req.params.id, {
-        include: [{ model: db.PropertyImage }],
+      // const findPropById = await db.Property.findByPk(req.params.id, {
+      //   include: [{ model: db.PropertyImage }],
+      // })
+
+      const findPropertyById = await db.Property.findByPk(req.params.id, {
+        include: [
+          { model: db.User },
+          { model: db.Categories },
+          { model: db.PropertyImage },
+          { model: db.Cities },
+        ],
       })
 
       return res.status(200).json({
         message: "Get Property",
-        data: findPropById,
+        // data: findPropById,
+        data: findPropertyById,
       })
     } catch (err) {
       console.log(err)

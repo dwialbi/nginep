@@ -52,8 +52,8 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="navbar-li">
-              <Link className="login-transform" to="/books">
-                Books
+              <Link className="login-transform" to="/reauth">
+                ReAuth
               </Link>
             </li>
 

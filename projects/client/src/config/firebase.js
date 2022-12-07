@@ -6,8 +6,6 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
-  signInWithGoogleRedirect,
-  onAuthStateChanged,
 } from "firebase/auth"
 
 // Your web app's Firebase configuration

@@ -34,6 +34,7 @@ const PostPropImg = () => {
   const params = useParams()
   const navigate = useNavigate()
   const [propertyImage, setPropertyImage] = useState([])
+  const [openId, setOpenId] = useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
   // =============================== Get Prop Image ========================================
   const getProperty = async () => {
@@ -43,16 +44,17 @@ const PostPropImg = () => {
       )
       console.log(responseProp.data)
       setPropertyImage(responseProp.data.data.PropertyImages)
-    } catch (error) {
-      console.log(error)
+    } catch (err) {
+      console.log(err)
     }
   }
 
   // =============================== Delete Image =========================================
   const DeleteImg = async (id) => {
     try {
-      await axiosInstance.delete(`/tenant/property/image/${id}`)
+      await axiosInstance.delete(`/tenant/property/image/${openId.id}`)
       getProperty()
+      setOpenId(null)
       // window.location.reload(false)
       // navigate(0)
       toast({ title: "Image deleted", status: "info" })
@@ -85,7 +87,7 @@ const PostPropImg = () => {
 
   useEffect(() => {
     getProperty()
-  }, [])
+  }, [openId])
   return (
     <Box
       mt="100px"
@@ -176,7 +178,10 @@ const PostPropImg = () => {
                 border="none"
                 color="white"
                 colors
-                onClick={onOpen}
+                onClick={() => {
+                  setOpenId(val)
+                  onOpen()
+                }}
                 size={{ base: "sm", sm: "sm" }}
                 cursor="pointer"
               />
@@ -217,7 +222,9 @@ const PostPropImg = () => {
                         bgColor="red.500"
                         borderRadius="8px"
                         onClick={() => {
-                          deleteRef.current.click()
+                          // deleteRef.current.click()
+                          DeleteImg(val.id)
+
                           onClose()
                         }}
                         _hover={{
