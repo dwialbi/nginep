@@ -147,6 +147,7 @@ const tenantController = {
     }
   },
   TenantPropertyDelete: async (req, res) => {
+    // ======================== hapus file public==========================
     const pathProp = "public/propImg/"
 
     const fileName = await db.PropertyImage.findAll({
@@ -155,7 +156,7 @@ const tenantController = {
       },
     })
     console.log(fileName)
-
+    // ========================================================================
     try {
       await db.Property.destroy({
         where: {

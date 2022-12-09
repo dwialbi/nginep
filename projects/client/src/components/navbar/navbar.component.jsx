@@ -11,11 +11,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, Navigate, useNavigate } from "react-router-dom"
 import { logout, login } from "../../redux/features/authSlice"
 // import { axiosInstance } from "../../api/index"
-import { useToast } from "@chakra-ui/react"
+import { Box, useDisclosure, useToast } from "@chakra-ui/react"
 import "./navbar.styles.css"
+import ReAuth from "../reAuthUser/reAuth.component"
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [open, setOpen] = useState(false)
   const [openOption, setOpenOption] = useState(false)
   const navigate = useNavigate()
 
@@ -29,6 +32,7 @@ const Navbar = () => {
     dispatch(logout())
     navigate("/")
   }
+
   return (
     <div className="navbar-body">
       <header className="navbar-header">
@@ -39,7 +43,7 @@ const Navbar = () => {
         <div class="group">
           <ul
             className="navbar-ul"
-            class={`${!isOpen ? "closed-navigation" : "navigation"}`}
+            class={`${!open ? "closed-navigation" : "navigation"}`}
           >
             <li className="navbar-li">
               <Link className="login-transform" to="/">
@@ -52,7 +56,11 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="navbar-li">
-              <Link className="login-transform" to="/reauth">
+              <Link
+                className="login-transform"
+                // to="/reauth"
+                onClick={onOpen}
+              >
                 ReAuth
               </Link>
             </li>
@@ -106,7 +114,7 @@ const Navbar = () => {
               <BiX
                 class={`${showShearch ? "closeBtn" : "closeActive"} `}
                 onClick={() => {
-                  setIsOpen(!isOpen)
+                  setOpen(!open)
                 }}
               />
             </span>
@@ -114,7 +122,7 @@ const Navbar = () => {
           <BiMenu
             class="menuToggle"
             onClick={() => {
-              setIsOpen(!isOpen)
+              setOpen(!open)
             }}
           />
         </div>
@@ -122,6 +130,7 @@ const Navbar = () => {
           <input type="text" placeholder="Search here" />
         </div> */}
       </header>
+      <ReAuth isOpen={isOpen} onClose={onClose} />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Input, Text, useToast } from "@chakra-ui/react"
+import { Box, Input, Text, useToast } from "@chakra-ui/react"
 import {
   EmailAuthProvider,
   getAuth,
@@ -7,12 +7,15 @@ import {
 import { useRef } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import Button from "../button/button.component"
 
-const ReAuth = () => {
+const ReAuthForm = () => {
   const navigate = useNavigate()
   const toast = useToast()
   const authSelector = useSelector((state) => state.auth)
   const passwordRef = useRef()
+  const [password, setPassword] = useState()
   const auth = getAuth()
   const user = auth.currentUser
 
@@ -21,6 +24,7 @@ const ReAuth = () => {
     const credential = EmailAuthProvider.credential(
       authSelector?.email,
       passwordRef.current.value
+      //   setPassword.current.value
     )
 
     try {
@@ -38,7 +42,7 @@ const ReAuth = () => {
       })
     }
   }
-  console.log(reauthenticateWithCredential)
+  // console.log(reauthenticateWithCredential)
 
   return (
     <Box mt="100px">
@@ -47,12 +51,22 @@ const ReAuth = () => {
         {authSelector.email}
       </Text>
       <form onSubmit={handleSubmit}>
-        <Text>Enter your password</Text>
-        <Input ref={passwordRef} {...{ passwordRef }} />
+        <Text mb="15px" fontSize="16px">
+          Enter your password
+        </Text>
+        <Input
+          ref={passwordRef}
+          {...{ passwordRef }}
+          width="34.2vh"
+          mb="20px"
+          //   {...{ password }}
+          //   value={password}
+          //   onChange={(e) => setPassword(e.target.value)}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Box>
   )
 }
 
-export default ReAuth
+export default ReAuthForm

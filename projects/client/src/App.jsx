@@ -10,6 +10,7 @@ import Navbar from "./components/navbar/navbar.component"
 import PostPropImg from "./components/postPropImg/post-prop-img.component"
 import PropertyForm from "./components/property-form/property-form.component"
 import ListingDetails from "./components/PropertyList/property-list.compoenet"
+import ReAuthForm from "./components/reAuthUser/reAuth"
 import ReAuth from "./components/reAuthUser/reAuth"
 import SignInTenant from "./components/sign-in-form-Tenant/sign-in.component"
 import SignIn from "./components/sign-in-form/sign-in.component"
@@ -77,7 +78,7 @@ function App() {
         <Route path="/property/edit/:id" element={<EditProperty />} />
         <Route path="/property/image/:id" element={<PostPropImg />} />
         <Route path="/changepassword" element={<ChangePassword />} />
-        <Route path="/reauth" element={<ReAuth />} />
+        <Route path="/reauth" element={<ReAuthForm />} />
       </Routes>
     </div>
   )

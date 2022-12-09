@@ -70,7 +70,8 @@ const SignIn = () => {
     initialValues: {
       email: "",
       password: "",
-      role: "user",
+      // role: "user",
+      // loginWith: "google",
     },
     onSubmit: async ({ email, password }) => {
       try {
@@ -92,6 +93,7 @@ const SignIn = () => {
             email: response.data.data.email,
             role: response.data.data.role,
             is_verified: response.data.data.is_verified,
+            loginWith: response.data.data.loginWith,
             // first_name: response.data.data.first_name,
             // last_name: response.data.data.last_name,
           })

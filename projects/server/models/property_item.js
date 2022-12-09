@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       PropertyItem.belongsTo(models.Property)
-      PropertyItem.hasMany(models.Images)
+      PropertyItem.hasMany(models.Images, { onDelete: "CASCADE" })
     }
   }
   PropertyItem.init(

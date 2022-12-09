@@ -5,6 +5,7 @@ const initialState = {
   email: "",
   role: "",
   is_verified: Boolean,
+  loginWith: "",
   // is_loading: false
   // first_name: "",
   // last_name: ""
@@ -19,6 +20,7 @@ const authSlice = createSlice({
       state.email = action.payload.email
       state.role = action.payload.role
       state.is_verified = action.payload.is_verified
+      state.loginWith = action.payload.loginWith
       // state.is_loading = false
       // console.log(action.payload)
       // state.first_name = action.payload.first_name

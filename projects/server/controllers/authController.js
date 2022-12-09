@@ -116,6 +116,7 @@ const authController = {
         where: { email },
         defaults: {
           is_verified: true,
+          loginWith: "google",
         },
       })
 
