@@ -27,9 +27,7 @@ const EditProperty = () => {
 
   const getProperty = async () => {
     try {
-      const responseProp = await axiosInstance.get(
-        `tenant/property/${params.id}`
-      )
+      const responseProp = await axiosInstance.get(`property/${params.id}`)
       setListing(responseProp.data.data)
       // setPropertyImage(responseProp.data.data.PropertyImages)
       console.log(responseProp.data.data)
@@ -51,7 +49,7 @@ const EditProperty = () => {
     onSubmit: async ({ name, address, description, rules }) => {
       try {
         const response = await axiosInstance.patch(
-          `/tenant/property/${params.id}`,
+          `/property/edit/${params.id}`,
           {
             name,
             address,
@@ -62,7 +60,7 @@ const EditProperty = () => {
 
         toast({
           title: "Success Edit Property",
-          // description:,
+          description: response.data.message,
           status: "success",
         })
       } catch (err) {

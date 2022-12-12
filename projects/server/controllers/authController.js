@@ -11,7 +11,7 @@ const { Op } = require("sequelize")
 const authController = {
   registerUser: async (req, res) => {
     try {
-      const { email, phone_number, role } = req.body
+      const { email, phone_number, role, loginWith } = req.body
 
       const findUserByEmail = await User.findOne({
         where: {
@@ -29,6 +29,7 @@ const authController = {
         email,
         phone_number,
         role,
+        loginWith,
       })
 
       return res.status(201).json({

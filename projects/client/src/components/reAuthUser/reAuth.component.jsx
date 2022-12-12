@@ -36,6 +36,7 @@ const ReAuth = ({ isOpen, onOpen, onClose }) => {
   const [compareAuth, setCompareAuth] = useState("")
   const [openModal, setOpenModal] = useState(false)
   const [closeModal, setCloseModal] = useState(true)
+  const [modalClose, setModalClose] = useState()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -50,19 +51,20 @@ const ReAuth = ({ isOpen, onOpen, onClose }) => {
         user,
         credential
       )
-
+      onClose(closeModal)
       console.log(reAtuhResponse)
-      setReAuth(reAtuhResponse.user.uid)
-      if (reAuth) {
-        console.log("test")
+      setReAuth(reAtuhResponse.user)
+      if (reAtuhResponse) {
+        // console.log("test")
         toast({
-          title: "success re enter your password",
-          // description: reAuth.data.message,
+          title: "Success re enter your password",
+          description: "Please enter your new password",
           status: "success",
         })
         // return
-        setCloseModal(false)
+        // setCloseModal(false)
         setOpenModal(true)
+        setModalClose(false)
       } else {
         throw e
       }
@@ -72,7 +74,8 @@ const ReAuth = ({ isOpen, onOpen, onClose }) => {
     } catch (err) {
       console.log(err)
       toast({
-        title: "CEK CONSOLE",
+        title: "Wrong password",
+        description: "Please re-check your password",
         status: "error",
       })
     }
@@ -88,8 +91,8 @@ const ReAuth = ({ isOpen, onOpen, onClose }) => {
         isCentered
       >
         <ModalOverlay />
-        <ModalContent height="300px">
-          <ModalHeader>
+        <ModalContent height="300px" borderRadius="10px">
+          <ModalHeader borderRadius="10px">
             <Text>Re Enter Your Password</Text>
           </ModalHeader>
 
@@ -100,12 +103,26 @@ const ReAuth = ({ isOpen, onOpen, onClose }) => {
               <FormLabel>{authSelector.email}</FormLabel>
               <FormLabel>Enter your password</FormLabel>
               <Input ref={passwordRef} {...{ passwordRef }} />
-              <Button type="submit">Submit</Button>
+              <Button
+                mt="20px"
+                type="submit"
+                bg="blue.500"
+                color="white"
+                _hover={{ bg: "blue.400" }}
+                width="130px"
+              >
+                Submit
+              </Button>
             </form>
           </ModalBody>
         </ModalContent>
       </Modal>
-      <CgsPass openModal={openModal} />
+      <CgsPass
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        closeModal={closeModal}
+        // onClose={onClose}
+      />
     </>
   )
 }

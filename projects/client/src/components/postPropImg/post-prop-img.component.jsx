@@ -39,9 +39,7 @@ const PostPropImg = () => {
   // =============================== Get Prop Image ========================================
   const getProperty = async () => {
     try {
-      const responseProp = await axiosInstance.get(
-        `tenant/property/${params.id}`
-      )
+      const responseProp = await axiosInstance.get(`/property/${params.id}`)
       console.log(responseProp.data)
       setPropertyImage(responseProp.data.data.PropertyImages)
     } catch (err) {
@@ -52,7 +50,7 @@ const PostPropImg = () => {
   // =============================== Delete Image =========================================
   const DeleteImg = async (id) => {
     try {
-      await axiosInstance.delete(`/tenant/property/image/${openId.id}`)
+      await axiosInstance.delete(`/property/delete/image/${openId.id}`)
       getProperty()
       setOpenId(null)
       // window.location.reload(false)
@@ -70,17 +68,23 @@ const PostPropImg = () => {
       newImgProp.append("image_url", event)
       // console.log(values.image_url[0].name)
       const responseImg = await axiosInstance.post(
-        `/tenant/property/image/${params.id}`,
+        `/property/image/${params.id}`,
         newImgProp
       )
       window.location.reload(false)
       // console.log(responseImg)
       toast({
         title: "Image succesfull added",
+        description: responseImg.data.message,
         status: "success",
       })
     } catch (err) {
       console.log(err)
+      toast({
+        title: "Failed to added new image",
+        // description: responseImg.data.message,
+        status: "error",
+      })
     }
   }
   // ===================================================================================

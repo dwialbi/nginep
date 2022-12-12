@@ -55,15 +55,17 @@ const Navbar = () => {
                 Property
               </Link>
             </li>
-            <li className="navbar-li">
-              <Link
-                className="login-transform"
-                // to="/reauth"
-                onClick={onOpen}
-              >
-                ReAuth
-              </Link>
-            </li>
+            {authSelector.loginWith === "email" ? (
+              <li className="navbar-li">
+                <Link
+                  className="login-transform"
+                  // to="/reauth"
+                  onClick={onOpen}
+                >
+                  ReAuth
+                </Link>
+              </li>
+            ) : null}
 
             <li className="navbar-li">
               {authSelector.id ? (

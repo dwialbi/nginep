@@ -36,9 +36,9 @@ const PropertyForm = () => {
 
   const getCategory = async () => {
     try {
-      const responseCategory = await axiosInstance.get("/tenant/category")
+      const responseCategory = await axiosInstance.get("/category/")
       setCategory(responseCategory.data.data)
-      console.log(responseCategory.data)
+      // console.log(responseCategory.data)
     } catch (err) {
       console.log(err)
     }
@@ -47,7 +47,7 @@ const PropertyForm = () => {
   // ========================================= Get Cities =============================================
   const getCities = async () => {
     try {
-      const responseCities = await axiosInstance.get("/tenant/cities")
+      const responseCities = await axiosInstance.get("/city/")
       setCities(responseCities.data.data)
     } catch (err) {
       console.log(err)
@@ -77,14 +77,11 @@ const PropertyForm = () => {
         for (let i = 0; i < values.image_url.length; i++) {
           newProperty.append("image_url", values.image_url[i])
         }
-        const response = await axiosInstance.post(
-          "/tenant/property",
-          newProperty
-        )
-
+        const response = await axiosInstance.post("/property/", newProperty)
+        console.log(response)
         toast({
           title: "Property successful added",
-          description: response.message,
+          description: response.data.message,
           status: "success",
         })
       } catch (err) {

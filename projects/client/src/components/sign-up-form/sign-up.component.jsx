@@ -25,8 +25,9 @@ const SignUpFrom = () => {
       //   confirmPassword: "",
       phone_number: "",
       role: "tenant",
+      loginWith: "email",
     },
-    onSubmit: async ({ email, password, phone_number, role }) => {
+    onSubmit: async ({ email, password, phone_number, role, loginWith }) => {
       try {
         //===================firebase=====================
 
@@ -41,6 +42,7 @@ const SignUpFrom = () => {
               password,
               phone_number,
               role,
+              loginWith,
             })
 
             navigate("/login")

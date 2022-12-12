@@ -21,17 +21,20 @@ app.use(express.json())
 
 const authRoute = require("../routes/authRoute")
 const userRoute = require("../routes/userRoute")
-const tenantRoute = require("../routes/tenantRoute")
-
+const propertiesRoute = require("../routes/properties.route")
+const categoryRoute = require("../routes/categoriesRoute")
+const cityRoute = require("../routes/cityRoute")
 const { verifyToken } = require("../middlewares/authMiddleware")
 
 app.use("/auth", authRoute)
 app.use("/user", verifyToken, userRoute)
 app.use(
-  "/tenant",
+  "/property",
   //  verifyToken,
-  tenantRoute
+  propertiesRoute
 )
+app.use("/category", categoryRoute)
+app.use("/city", cityRoute)
 
 app.use("/public/propImg", express.static("public/propImg"))
 //#region API ROUTES

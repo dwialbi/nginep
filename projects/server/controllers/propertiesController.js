@@ -6,7 +6,7 @@ const User = db.User
 // const path = require("path")
 
 const tenantController = {
-  TenantPropertyPost: async (req, res) => {
+  propertyPost: async (req, res) => {
     // const newProperty = await sequelize.transaction()
     try {
       const foundCityById = await db.Cities.findByPk(req.body.cityId)
@@ -105,7 +105,7 @@ const tenantController = {
       })
     }
   },
-  TenantPropertyUpdate: async (req, res) => {
+  propertyUpdate: async (req, res) => {
     try {
       // const { id } = req.params
       // disimpan dalam vairabel dan akan dapat respon
@@ -146,7 +146,7 @@ const tenantController = {
       })
     }
   },
-  TenantPropertyDelete: async (req, res) => {
+  propertyDelete: async (req, res) => {
     // ======================== hapus file public==========================
     const pathProp = "public/propImg/"
 
@@ -177,7 +177,7 @@ const tenantController = {
       })
     }
   },
-  TenantPropertyImageDelete: async (req, res) => {
+  propertyImageDelete: async (req, res) => {
     // console.log(fileName)
     const path = "public/propImg/"
 
@@ -205,7 +205,7 @@ const tenantController = {
       })
     }
   },
-  TenantPropertyImagePost: async (req, res) => {
+  propertyImagePost: async (req, res) => {
     try {
       await db.Property.findOne({
         where: {
@@ -231,34 +231,7 @@ const tenantController = {
       })
     }
   },
-  getAllCategories: async (req, res) => {
-    try {
-      const showAllCategory = await db.Categories.findAll()
 
-      return res.status(200).json({
-        data: showAllCategory,
-      })
-    } catch (err) {
-      console.log(err)
-      res.status(500).json({
-        message: err.message,
-      })
-    }
-  },
-  getAllCities: async (req, res) => {
-    try {
-      const showAllCities = await db.Cities.findAll()
-
-      return res.status(200).json({
-        data: showAllCities,
-      })
-    } catch (err) {
-      console.log(err)
-      res.status(500).json({
-        message: err.message,
-      })
-    }
-  },
   getPropertyById: async (req, res) => {
     try {
       // const findPropById = await db.Property.findByPk(req.params.id, {
