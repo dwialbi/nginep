@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      User.hasMany(models.Transaction)
       // define association here
       // User.hasMany(models.Property)
     }
@@ -26,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
         type: DataTypes.BOOLEAN,
       },
-      ktp: DataTypes.STRING,
+      // ktp: DataTypes.STRING,
       role: { type: DataTypes.STRING, defaultValue: "user" },
       loginWith: DataTypes.STRING,
     },

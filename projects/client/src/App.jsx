@@ -8,6 +8,7 @@ import ChangePassword from "./components/changePassword/changePassword"
 import EditProperty from "./components/editProperty/edit-property.component"
 import Navbar from "./components/navbar/navbar.component"
 import PostPropImg from "./components/postPropImg/post-prop-img.component"
+import PaymentProof from "./components/proofPayment/proofPayment.component"
 import PropertyForm from "./components/property-form/property-form.component"
 import ListingDetails from "./components/PropertyList/property-list.compoenet"
 import ReAuthForm from "./components/reAuthUser/reAuth"
@@ -79,6 +80,7 @@ function App() {
         <Route path="/property/image/:id" element={<PostPropImg />} />
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/reauth" element={<ReAuthForm />} />
+        <Route path="/payment-proof/:id" element={<PaymentProof />} />
       </Routes>
     </div>
   )

@@ -24,6 +24,7 @@ const userRoute = require("../routes/userRoute")
 const propertiesRoute = require("../routes/properties.route")
 const categoryRoute = require("../routes/categoriesRoute")
 const cityRoute = require("../routes/cityRoute")
+const transactionRoute = require("../routes/transactionRoute")
 const { verifyToken } = require("../middlewares/authMiddleware")
 
 app.use("/auth", authRoute)
@@ -35,8 +36,9 @@ app.use(
 )
 app.use("/category", categoryRoute)
 app.use("/city", cityRoute)
+app.use("/transaction", transactionRoute)
 
-app.use("/public/propImg", express.static("public/propImg"))
+app.use("/public", express.static("public"))
 //#region API ROUTES
 
 // ===========================
@@ -89,7 +91,10 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log(`ERROR: ${err}`)
   } else {
-    db.sequelize.sync({ alter: true })
+    db.sequelize.sync({
+      //  alter: true
+      force: false,
+    })
 
     if (!fs.existsSync("public")) {
       fs.mkdirSync("public")

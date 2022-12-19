@@ -1,0 +1,34 @@
+node schedule
+
+dari created at di tambah 2 jam kedepan
+jika pembayaran blm dilakukan maka transaksi akan dibatakan(secara otomatis)
+akan ada query yang akan mengupdate field transaction status
+
+dari waiting for payment menjadi cancel
+
+query update akan tereksekusi 2 jam kedepan
+
+dengan menggunakan node schadule
+
+============================================================
+
+if status waiting timer jalan
+
+ketika waktu habis maka status akan berubah jadi canceled
+
+node schadule melakukan cek setiap berapa menit sekali untuk melakukan 
+cek untuk memastikan dia paid atau waiting
+yg di cek 
+
+====================================================================
+
+ketika transaction terbuat akan ada exp date yaitu 2 jam dari transaction terbuat
+
+post img dpt batasan yaitu exp date dari colum tersebut
+dan status bawaan ketika transaksi terbuat akan menjadi waiting for payment
+
+ketika lbih dari 2 jam akan jadi canceled dan user tidak dapat melakukan payment
+
+
+
+DATE, DATETIME , TIMESTIME

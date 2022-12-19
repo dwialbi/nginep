@@ -30,6 +30,7 @@ const tenantController = {
           // UserId: "53", // dummy
           UserId: foundUserById.id,
         }
+
         // { transaction: newProperty }
       )
 

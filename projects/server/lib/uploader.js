@@ -7,7 +7,7 @@ const upload = ({
 }) => {
   const diskStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, "public/propImg")
+      cb(null, "public")
     },
     filename: (req, file, cb) => {
       const { originalname } = file
@@ -18,6 +18,7 @@ const upload = ({
 
   const fileFilter = (req, file, cb) => {
     const extension = file.mimetype.split("/")[1]
+
     if (acceptedFileTypes.includes(extension)) {
       cb(null, true)
     } else {
@@ -27,7 +28,6 @@ const upload = ({
 
   return multer({
     storage: diskStorage,
-
     fileFilter,
   })
 }

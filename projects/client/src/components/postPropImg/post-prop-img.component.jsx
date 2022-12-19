@@ -46,6 +46,7 @@ const PostPropImg = () => {
       console.log(err)
     }
   }
+  console.log(propertyImage)
 
   // =============================== Delete Image =========================================
   const DeleteImg = async (id) => {
@@ -203,7 +204,7 @@ const PostPropImg = () => {
                 h="100%"
                 objectFit="cover"
                 // src={val.image_url}
-                src={`http://localhost:8000/public/propImg/${val.image_url}`}
+                src={`http://localhost:8000/public/${val.image_url}`}
               />
               <Modal isCentered isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />

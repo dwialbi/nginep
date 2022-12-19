@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       PropertyItem.belongsTo(models.Property)
       PropertyItem.hasMany(models.Images, { onDelete: "CASCADE" })
+      PropertyItem.hasMany(models.Transaction)
     }
   }
   PropertyItem.init(
