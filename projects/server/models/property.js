@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Property.hasMany(models.PropertyItem, { onDelete: "CASCADE" })
       Property.hasMany(models.PropertyFacilities)
       Property.hasMany(models.PropertyImage, { onDelete: "CASCADE" })
+      Property.hasMany(models.Transaction)
     }
   }
   Property.init(

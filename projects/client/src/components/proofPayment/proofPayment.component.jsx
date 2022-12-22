@@ -21,6 +21,8 @@ const PaymentProof = () => {
   const params = useParams()
   const [expired_date, setExpired_date] = useState()
   const [price, setPrice] = useState("")
+  const [status, setStatus] = useState("")
+
   const [image, setImage] = useState({ preview: "", data: "" })
   const toast = useToast()
   const inputFileRef = useRef()
@@ -30,10 +32,12 @@ const PaymentProof = () => {
     const response = await axiosInstance.get(`/transaction/asu/${params.id}`)
     // setCountDown(response.data.data.exp_date)
     setExpired_date(response.data.dateNow)
+    setStatus(response.data.get.status)
     setPrice(response.data.price)
     console.log(response)
   }
 
+  console.log(status)
   // ======================== Upload Payment =================================
 
   const handleSubmit = async (e) => {
@@ -45,17 +49,23 @@ const PaymentProof = () => {
         `/transaction/post/${params.id}`,
         formData
       )
+
+      if (responsePaymentProof.name === "AxiosError") {
+        throw new Error(responsePaymentProof.message)
+      }
+
       console.log(responsePaymentProof)
       toast({
         status: "success",
-        message: "payment proof successful uploaded",
+        description: "Payment proof successful uploaded",
+        title: "Success",
       })
     } catch (err) {
       console.log(err)
       toast({
         status: "error",
-        description: err.responsePaymentProof.data.message,
-        title: "TIME OUT!",
+        description: "Your payment is expired",
+        title: "Expired",
       })
     }
   }
@@ -221,48 +231,69 @@ const PaymentProof = () => {
           </Accordion>
         </Box>
       </Center>
-      <form onSubmit={handleSubmit}>
-        <Center mt="100px">
-          <Box textAlign="center" w="xl">
-            <Text fontSize="20px" fontWeight="bold">
-              After finish your payment
-            </Text>
-            <Text fontSize="20px" fontWeight="bold" mb="30px">
-              Please upload your payment proof
-            </Text>
-            {image.preview && (
-              <Image src={image.preview} h="100%" width="100%" />
-            )}
-            <Input
-              type="file"
-              display="none"
-              onChange={handleFileChange}
-              ref={inputFileRef}
-              required
-            />
-            <Button
-              w="150px"
-              backgroundColor="blue.500"
-              color="white"
-              onClick={() => {
-                inputFileRef.current.click()
-              }}
-            >
-              Choose File
-            </Button>
-            <Button
-              w="150px"
-              type="submit"
-              backgroundColor="blue.500"
-              color="white"
-            >
-              Submit
-            </Button>
-          </Box>
-        </Center>
-      </form>
+      {status === "waiting for payment" ? (
+        <form onSubmit={handleSubmit}>
+          <Center mt="100px">
+            <Box textAlign="center" w="xl">
+              <Text fontSize="20px" fontWeight="bold">
+                After finish your payment
+              </Text>
+              <Text fontSize="20px" fontWeight="bold" mb="30px">
+                Please upload your payment proof
+              </Text>
+              {image.preview && (
+                <Image src={image.preview} h="100%" width="100%" />
+              )}
+              <Input
+                type="file"
+                display="none"
+                onChange={handleFileChange}
+                ref={inputFileRef}
+                required
+              />
+              <Button
+                w="150px"
+                backgroundColor="blue.500"
+                color="white"
+                onClick={() => {
+                  inputFileRef.current.click()
+                }}
+              >
+                Choose File
+              </Button>
+              <Button
+                w="150px"
+                type="submit"
+                backgroundColor="blue.500"
+                color="white"
+              >
+                Submit
+              </Button>
+            </Box>
+          </Center>
+        </form>
+      ) : (
+        // <Center>
+        <Box mt="50px">
+          <Text fontSize="50px" fontWeight="bold" textAlign="center">
+            Your Status :
+          </Text>
+          <Text
+            fontSize="30px"
+            fontWeight="bold"
+            textAlign="center"
+            textTransform="capitalize"
+          >
+            {status}
+          </Text>
+        </Box>
+        // </Center>
+      )}
     </Box>
   )
 }
 
 export default PaymentProof
+
+//1 unpaid, 2. waiting for admin confirmation, 3. process/ paid, 4.canceled,
+// 5. expired 6. completed

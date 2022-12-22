@@ -11,19 +11,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Transaction.belongsTo(models.User)
       Transaction.belongsTo(models.PropertyItem)
+      Transaction.belongsTo(models.Property)
     }
   }
   Transaction.init(
     {
-      start_date: DataTypes.STRING,
-      end_date: DataTypes.STRING,
+      start_date: DataTypes.DATE,
+      end_date: DataTypes.DATE,
       price: DataTypes.STRING,
       payment_proof: DataTypes.STRING,
-      is_paid: DataTypes.BOOLEAN,
-      is_accepted: DataTypes.BOOLEAN,
-      is_cancelled: DataTypes.BOOLEAN,
       status: DataTypes.STRING,
       exp_date: DataTypes.DATE,
+      is_checked: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       sequelize,

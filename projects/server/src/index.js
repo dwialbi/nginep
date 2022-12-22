@@ -4,6 +4,8 @@ const cors = require("cors")
 const { join } = require("path")
 const db = require("../models")
 const fs = require("fs")
+const schedule = require("../schedule/paymentCheck")
+const emailer = require("../lib/emailer")
 
 const PORT = process.env.PORT || 8000
 const app = express()
@@ -29,11 +31,7 @@ const { verifyToken } = require("../middlewares/authMiddleware")
 
 app.use("/auth", authRoute)
 app.use("/user", verifyToken, userRoute)
-app.use(
-  "/property",
-  //  verifyToken,
-  propertiesRoute
-)
+app.use("/property", verifyToken, propertiesRoute)
 app.use("/category", categoryRoute)
 app.use("/city", cityRoute)
 app.use("/transaction", transactionRoute)
@@ -102,3 +100,5 @@ app.listen(PORT, (err) => {
     console.log(`APP RUNNING at ${PORT} ✅`)
   }
 })
+
+// schedule.invoke()

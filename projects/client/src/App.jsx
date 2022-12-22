@@ -7,6 +7,7 @@ import { axiosInstance } from "./api"
 import ChangePassword from "./components/changePassword/changePassword"
 import EditProperty from "./components/editProperty/edit-property.component"
 import Navbar from "./components/navbar/navbar.component"
+import PaymentApproval from "./components/paymentApproval/paymentApproval"
 import PostPropImg from "./components/postPropImg/post-prop-img.component"
 import PaymentProof from "./components/proofPayment/proofPayment.component"
 import PropertyForm from "./components/property-form/property-form.component"
@@ -81,6 +82,7 @@ function App() {
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/reauth" element={<ReAuthForm />} />
         <Route path="/payment-proof/:id" element={<PaymentProof />} />
+        <Route path="/payment-approval/:id" element={<PaymentApproval />} />
       </Routes>
     </div>
   )
