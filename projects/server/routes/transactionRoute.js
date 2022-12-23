@@ -19,7 +19,8 @@ router.patch(
 router.post("/", transactionController.createPayment)
 router.get("/user-data/:id", transactionController.getDataTransaction)
 router.get("/asu/:id", transactionController.getTest)
-router.patch("/update/:id", transactionController.tenantPaymentAprroval)
+router.patch("/approve/:id", transactionController.transactionApprove)
+router.patch("/reject/:id", transactionController.transactionReject)
 router.get("/fuck", transactionController.getasu)
 
 module.exports = router

@@ -100,5 +100,3 @@ app.listen(PORT, (err) => {
     console.log(`APP RUNNING at ${PORT} ✅`)
   }
 })
-
-// schedule.invoke()

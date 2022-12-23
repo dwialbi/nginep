@@ -2,7 +2,9 @@ const moment = require("moment")
 const db = require("../models")
 const fs = require("fs")
 const emailer = require("../lib/emailer")
-
+const schedule = require("node-schedule")
+const automaticPaymentCheck = require("../schedule/paymentCheck")
+const automaticSendMail = require("../schedule/reminderCheckin")
 const handlebars = require("handlebars")
 const transactionController = {
   paymentProof: async (req, res) => {
@@ -16,13 +18,13 @@ const transactionController = {
       const expDateValue = Object.values(expDate.dataValues)
       const currentDate = moment().format("YYYY-MM-DD HH:mm:ss")
       const dateNow = moment(expDateValue[0])
-        .add(-7, "hours")
+        // .add(-7, "hours")
         .format("YYYY-MM-DD HH:mm:ss")
 
       console.log(currentDate)
       console.log(dateNow)
 
-      console.log(expDate)
+      // console.log(expDate)
 
       if (currentDate > dateNow) {
         return res.status(400).json({
@@ -34,6 +36,7 @@ const transactionController = {
       const postImg = await db.Transaction.update(
         {
           payment_proof: req.file.filename,
+          status: "waiting for tenant confirmation",
         },
         {
           where: {
@@ -57,13 +60,13 @@ const transactionController = {
     try {
       // const date = moment().add(2, "hours").format("YYYY-MM-DD hh:mm:ss")
       // const date = moment().add(2, "hours").format("LLL")
-      const date = moment().add(9, "hours").format("YYYY-MM-DD HH:mm:ss")
       // const date = moment().add(2, "hours").unix()
 
-      console.log(date)
+      // console.log(date)
       // console.log(req.body)
       // process.exit()
 
+      const date = moment().add(2, "hours").format("YYYY-MM-DD HH:mm:ss")
       const start = moment().add(3, "days").format("YYYY-MM-DD HH:mm:ss")
       const end = moment().add(5, "days").format("YYYY-MM-DD HH:mm:ss")
 
@@ -77,6 +80,11 @@ const transactionController = {
         exp_date: date,
         status: "waiting for payment",
       })
+
+      automaticPaymentCheck(test)
+      automaticSendMail(test)
+
+      // schedule.scheduleJob(test.exp_date, automaticPaymentCheck(test))
 
       return res.status(200).json({
         message: "create transaction",
@@ -122,11 +130,11 @@ const transactionController = {
       })
     }
   },
-  tenantPaymentAprroval: async (req, res) => {
+  transactionApprove: async (req, res) => {
     try {
       await db.Transaction.update(
         {
-          status: req.body.status,
+          status: "in progress",
         },
         {
           where: {
@@ -170,14 +178,14 @@ const transactionController = {
       const getRoomCapacity = Object.values(
         findTransactionData.PropertyItem.dataValues
       )[3]
-      console.log(getStatus)
-      console.log(getUserEmail)
-      console.log(getPropName)
-      console.log(getPropAddress)
-      console.log(getPropRules)
-      console.log(getRoomType)
-      console.log(getRoomCapacity)
-      console.log(findTransactionData)
+      // console.log(getStatus)
+      // console.log(getUserEmail)
+      // console.log(getPropName)
+      // console.log(getPropAddress)
+      // console.log(getPropRules)
+      // console.log(getRoomType)
+      // console.log(getRoomCapacity)
+      // console.log(findTransactionData)
 
       const rawHtml = fs.readFileSync("templates/remainderDetail.html", "utf-8")
       const compiledHTML = handlebars.compile(rawHtml)
@@ -190,6 +198,7 @@ const transactionController = {
         getStatus,
       })
 
+      // yumeekyoo
       // await emailer({
       //   to: getUserEmail,
       //   html: htmlresult,
@@ -198,12 +207,34 @@ const transactionController = {
       // })
 
       return res.status(200).json({
-        message: "Update new status",
+        message: "payment approved",
         data: findTransactionData,
       })
     } catch (err) {
       console.log(err)
       return res.status(500).json({
+        message: err.message,
+      })
+    }
+  },
+  transactionReject: async (req, res) => {
+    try {
+      await db.Transaction.update(
+        {
+          status: "waiting for payment",
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      )
+      return res.status(200).json({
+        message: "payment rejected",
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
         message: err.message,
       })
     }
